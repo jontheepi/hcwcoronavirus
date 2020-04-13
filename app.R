@@ -29,7 +29,7 @@ ui <- fluidPage(
                
    navbarPage("Healthcare worker deaths from novel Coronavirus (COVID-19) in the US",
           
-        tabPanel("Map",h4("56 reported deaths as of 4/12/2020 1 AM", style = "color:#ff0000"),
+        tabPanel("Map",h4("62 reported deaths as of 4/12/2020 9 PM", style = "color:#ff0000"),
                  h4("From news reports. An underestimate. Mapped location is work/facility location. Unknown locations are placed at state capitol or nearest city."),
                  h4("In some cases, the source of transmission (work vs. community) may be unclear."),
                  leafletOutput("map",width="100%",height="500px"),
@@ -37,7 +37,8 @@ ui <- fluidPage(
                  h4("US deaths:",a("Medpagetoday",href="https://www.medpagetoday.com/infectiousdisease/covid19/85867")),
                  h4("EMS deaths:: ",a("EMS1.com",href="https://www.ems1.com/coronavirus-covid-19/articles/covid-19-ems-deaths-jk5zWFziwYVYUaM4/")),
                  h4("UK NHS deaths:",a("The Telegraph",href="https://www.telegraph.co.uk/news/2020/04/07/nhs-staff-died-coronavirus-frontline-workers-victims/")),
-                 h4("E-mail: ",a("hcwcoronavirus@gmail.com",href="mailto:hcwcoronavirus@gmail.com"))
+                 h4("E-mail: ",a("hcwcoronavirus@gmail.com",href="mailto:hcwcoronavirus@gmail.com")),
+                 h4("Code and data for this project is on GitHub",a("https://github.com/jontheepi/hcwcoronavirus",href="https://github.com/jontheepi/hcwcoronavirus"))
         ),
         tabPanel("Attribute Table",dataTableOutput("table"),style = "font-size:90%"),
         tabPanel("Time series",plotOutput("time")),
@@ -110,7 +111,8 @@ server <- function(input, output) {
      output$age<-renderPlot({
        qplot(age_data$Age, geom="histogram",binwidth=5,fill=age_data$Type)+xlab("Age")+
          ylab("Number of Deaths")+ggtitle("Histogram of HCW Deaths from COVID-19, by Age and Type")+
-         theme(text = element_text(size=20))+scale_y_discrete(limits=c(0,5,10,15,20,25,30))+scale_fill_discrete(name = "Type of HCW")
+         theme(text = element_text(size=20))+ylim(0,15)+scale_fill_discrete(name = "Type of HCW")
+         
      })
      
     # Sex barchart
