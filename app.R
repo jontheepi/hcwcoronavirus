@@ -29,13 +29,13 @@ ui <- fluidPage(
                
    navbarPage("Healthcare worker deaths from novel Coronavirus (COVID-19) in the US",
           
-        tabPanel("Map",h4("62 reported deaths as of 4/12/2020 9 PM", style = "color:#ff0000"),
-                 h4("From news reports. An underestimate. Mapped location is work/facility location. Unknown locations are placed at state capitol or nearest city."),
-                 h4("In some cases, the source of transmission (work vs. community) may be unclear."),
+        tabPanel("Map",h4("70 reported deaths as of 4/15/2020 8:30 PM", style = "color:#ff0000"),
+                 h4("This app visualizes US healthcare worker deaths from coronavirus (COVID-19) that are reported in the news. It is an underestimate."),
+                 h4("Mapped location is work/facility location. Unknown locations are placed at state capitol or nearest city. In some cases, the source of transmission (work vs. community) may be unclear."),
                  leafletOutput("map",width="100%",height="500px"),
                  h4("Notes: Only reported deaths, does not include illnesses and hospitalizations. Does not include other frontline and critical workers. Also included are other types of staff that worked in an affected facility. Does not include non-working retirees."),
                  h4("US deaths:",a("Medpagetoday",href="https://www.medpagetoday.com/infectiousdisease/covid19/85867")),
-                 h4("EMS deaths:: ",a("EMS1.com",href="https://www.ems1.com/coronavirus-covid-19/articles/covid-19-ems-deaths-jk5zWFziwYVYUaM4/")),
+                 h4("EMS deaths:",a("EMS1.com",href="https://www.ems1.com/coronavirus-covid-19/articles/covid-19-ems-deaths-jk5zWFziwYVYUaM4/")),
                  h4("UK NHS deaths:",a("The Telegraph",href="https://www.telegraph.co.uk/news/2020/04/07/nhs-staff-died-coronavirus-frontline-workers-victims/")),
                  h4("E-mail: ",a("hcwcoronavirus@gmail.com",href="mailto:hcwcoronavirus@gmail.com")),
                  h4("Code and data for this project is on GitHub",a("https://github.com/jontheepi/hcwcoronavirus",href="https://github.com/jontheepi/hcwcoronavirus"))
@@ -123,14 +123,12 @@ server <- function(input, output) {
        sex_agg$Group.1=as.character(sex_agg$Group.1)
        sex_agg$Group.1[sex_agg$Group.1==""]<-"Missing"
        ggplot(sex_agg,aes(x=Group.1,y=x))+geom_bar(stat="identity")+
-         xlab("Sex")+ylab("Number of Deaths")+ggtitle("HCW Deaths from COVID-19, by Sex")+theme(text = element_text(size=20))+ylim(0,30)+scale_fill_discrete(name = "Sex")+
+         xlab("Sex")+ylab("Number of Deaths")+ggtitle("HCW Deaths from COVID-19, by Sex")+theme(text = element_text(size=20))+ylim(0,40)+scale_fill_discrete(name = "Sex")+
          geom_text(aes(label=x),vjust=-1,size=6)
      })
      
 
      # Summary statistics
-     #state<-summarytools::freq(mapdata$State,order="freq")
-     #age<-summarytools::describe(mapdata$Age)
      allvariables<- mapdata %>% dplyr::select(Age,Sex,Type,Facility, City,State,Zipcode)
      overview<-dfSummary(allvariables,max.distinct.values = 50)
      output$stats<-renderUI({
@@ -138,9 +136,6 @@ server <- function(input, output) {
             method = 'render',
             omit.headings = TRUE, # not FALSE
             bootstrap.css = FALSE,footnote=NA)
-     #xtable(new)
-      #dfSummary(mapdata,bootstrap.css=FALSE,plain.ascii = FALSE,method="render",g
-      # freq(iris$Species, plain.ascii = FALSE, style = "rmarkdown",bootstrap.css=TRUE,display.labels = TRUE,raph.magnif = 0.8))
     })
 }
 
